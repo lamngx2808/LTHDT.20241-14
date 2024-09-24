@@ -6,3 +6,5 @@ Thành viên:
 Nguyễn Thanh Lâm - 20204997
 
 Nguyễn Ngọc Lan - 20225730
+
+Vi Dương Khanh - 20225864

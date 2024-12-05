@@ -3,6 +3,7 @@ public class Node {
 	private int id;
 	private String name;
 	private String ipAddress;
+	
 	public Node(String name, String ipAddress) {
 		super();
 		this.id = idCounter++;

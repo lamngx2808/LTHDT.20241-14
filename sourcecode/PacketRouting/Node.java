@@ -5,6 +5,22 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Node { // will always be connecting to a router
+  private final ArrayList<RoutingEntry> routingTable = new ArrayList<>();
+  private final ArrayList<Connection> connections = new ArrayList<>();
+  public ArrayList<RoutingEntry> getRoutingTable() {
+    return routingTable;
+  }
+
+  public void addRoutingEntry(RoutingEntry re){routingTable.add(re);}
+  public void addRoutingEntry(ArrayList<RoutingEntry> re){routingTable.addAll(re);}
+
+  public void removeRoutingEntry(RoutingEntry re){routingTable.remove(re);}
+  public void removeRoutingEntry(ArrayList<RoutingEntry> re){routingTable.removeAll(re);}
+
+  public void updateRoutingEntry(RoutingEntry pikachu, RoutingEntry mewtwo){
+    routingTable.remove(pikachu);
+    routingTable.add(mewtwo);
+  }
 
   private static int idCounter = 0;
   private int id;
@@ -45,6 +61,13 @@ public class Node { // will always be connecting to a router
   public void addPacket(ArrayList<Packet> packets) {this.packets.addAll(packets);}
   public void removePacket(Packet packet) {this.packets.remove(packet);}
   public void removePacket(ArrayList<Packet> packets) {this.packets.removeAll(packets);}
+
+  public ArrayList<Connection> getConnections() {return connections;}
+
+  public void addConnection(Connection connection) {connections.add(connection);}
+  public void addConnection(ArrayList<Connection> connections) {this.connections.addAll(connections);}
+  public void removeConnection(Connection connection) {connections.remove(connection);}
+  public void removeConnection(ArrayList<Connection> connections) {this.connections.removeAll(connections);}
 
   public void setDefault_gateway(Connection default_gateway) {
     this.default_gateway = default_gateway;

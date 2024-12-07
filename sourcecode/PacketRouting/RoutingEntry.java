@@ -2,18 +2,16 @@ package PacketRouting;
 
 public class RoutingEntry {
   private String destination;
-  private String netmask;
-  private String gateway;
-  private String intf;
-  private int metric;
+  private String outGoingHop; //
+  private String nextHop; // refer to the ip the connection's other node
+  private int cost; // the sum of all connections' latency
   private Connection connection;
 
-  RoutingEntry(String destination, String netmask, String gateway, String intf, int metric, Connection connection) {
+  RoutingEntry(String destination, String outGoingHop, String nextHop, int cost, Connection connection) {
     this.destination = destination;
-    this.netmask = netmask;
-    this.gateway = gateway;
-    this.intf = intf;
-    this.metric = metric;
+    this.outGoingHop = outGoingHop;
+    this.nextHop = nextHop;
+    this.cost = cost;
     this.connection = connection;
   }
 
@@ -25,36 +23,28 @@ public class RoutingEntry {
     this.destination = destination;
   }
 
-  public String getNetmask() {
-    return netmask;
+  public String getOutGoingHop() {
+    return outGoingHop;
   }
 
-  public void setNetmask(String netmask) {
-    this.netmask = netmask;
+  public void setOutGoingHop(String outGoingHop) {
+    this.outGoingHop = outGoingHop;
   }
 
-  public String getGateway() {
-    return gateway;
+  public String getNextHop() {
+    return nextHop;
   }
 
-  public void setGateway(String gateway) {
-    this.gateway = gateway;
+  public void setNextHop(String nextHop) {
+    this.nextHop = nextHop;
   }
 
-  public String getIntf() {
-    return intf;
+  public int getCost() {
+    return cost;
   }
 
-  public void setIntf(String intf) {
-    this.intf = intf;
-  }
-
-  public int getMetric() {
-    return metric;
-  }
-
-  public void setMetric(int metric) {
-    this.metric = metric;
+  public void setCost(int cost) {
+    this.cost = cost;
   }
 
   public Connection getConnection() {

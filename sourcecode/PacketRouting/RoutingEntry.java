@@ -2,12 +2,13 @@ package PacketRouting;
 
 public class RoutingEntry {
   private String destination;
-  private String outGoingHop; //
-  private String nextHop; // refer to the ip the connection's other node
-  private int cost; // the sum of all connections' latency
+  private String outGoingHop; // The interface used to send packets
+  private String nextHop; // Refers to the IP of the connection's other node
+  private int cost; // The sum of all connections' latency
   private Connection connection;
 
-  RoutingEntry(String destination, String outGoingHop, String nextHop, int cost, Connection connection) {
+  // Constructor
+  public RoutingEntry(String destination, String outGoingHop, String nextHop, int cost, Connection connection) {
     this.destination = destination;
     this.outGoingHop = outGoingHop;
     this.nextHop = nextHop;
@@ -15,6 +16,7 @@ public class RoutingEntry {
     this.connection = connection;
   }
 
+  // Getters and Setters
   public String getDestination() {
     return destination;
   }

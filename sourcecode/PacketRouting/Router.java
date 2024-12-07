@@ -24,6 +24,7 @@ public class Router extends Node {
 
         for (RoutingEntry re : getRoutingTable()) {
           if (re.getDestination().equals(packet.getDestination().getIpAddress())) {
+            re.getConnection().tick();
             re.getConnection().addPacket(packet, this);
             found = true;
             break;

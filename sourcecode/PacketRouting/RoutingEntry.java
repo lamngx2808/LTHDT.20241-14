@@ -13,7 +13,6 @@ public class RoutingEntry {
     this.outGoingHop = outGoingHop;
     this.nextHop = nextHop;
     this.cost = cost;
-    this.connection = connection;
   }
 
   // Getters and Setters

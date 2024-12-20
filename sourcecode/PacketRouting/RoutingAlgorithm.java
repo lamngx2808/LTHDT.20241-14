@@ -1,6 +1,13 @@
 package PacketRouting;
 
 public abstract class RoutingAlgorithm {
-  String algorithmName;
-  public abstract void computeRoutingTable();
+	protected Graph graph;
+
+	public RoutingAlgorithm(Graph graph) {
+		this.graph = graph;
+	}
+
+	public abstract void initializeRoutingTable();
+
+	public abstract void computeShortestPath(Node source, Node target);
 }

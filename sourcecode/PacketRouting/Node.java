@@ -9,25 +9,40 @@ abstract class Node {
 	private int id;
 	private String name;
 	private String ipAddress;
-	private String defaultGateway;
+	private String macAddress;
+	private Node defaultGateway;
 	  
 	private ArrayList<Connection> connections = new ArrayList<>();
 	private Queue<Packet> packets = new LinkedList<>();
 	private ArrayList<Packet> receivedPackets = new ArrayList<>();
 
 	// Constructor
-	public Node(String name, String ipAddress) {
-	    super();
-	    this.id = idCounter++;
-	    this.name = name;
-	    this.ipAddress = ipAddress;
+	
+	public Node(String name, String macAddress) {
+		super();
+		this.id = idCounter++;
+		this.name = name;
+		this.macAddress = macAddress;
 	}
 	
-	public Node(String name, String ipAddress, String defaultGateway) {
+	public Node(String name, String ipAddress, String macAddress) {
 		super();
+		this.id = idCounter++;
 		this.name = name;
 		this.ipAddress = ipAddress;
+		this.macAddress = macAddress;
+	}
+
+	public Node(String name, String ipAddress, String macAddress, Node defaultGateway) {
+		super();
+		this.id = idCounter++;
+		this.name = name;
+		this.ipAddress = ipAddress;
+		this.macAddress = macAddress;
 		this.defaultGateway = defaultGateway;
+		Connection conn = new Connection(this, defaultGateway);
+		this.addConnection(conn);
+		defaultGateway.addConnection(conn);
 	}
 
 	// Getter and Setter
@@ -50,12 +65,20 @@ abstract class Node {
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
+	
+	public String getMacAddress() {
+	    return macAddress;
+	}
 
-	public String getDefaultGateway() {
+	public void setMacAddress(String macAddress) {
+	    this.macAddress = macAddress;
+	}
+
+	public Node getDefaultGateway() {
 		return defaultGateway;
 	}
 
-	public void setDefaultGateway(String defaultGateway) {
+	public void setDefaultGateway(Node defaultGateway) {
 		this.defaultGateway = defaultGateway;
 	}
 
@@ -78,8 +101,6 @@ abstract class Node {
         } else if (connection.getNode2().getId() == this.id) {
             Connection reversedConnection = new Connection(this, connection.getNode1(), connection.getLatency());
             this.connections.add(reversedConnection);
-        } else {
-            throw new IllegalArgumentException("Connection does not involve this node.");
         }
     }
 	
@@ -99,22 +120,42 @@ abstract class Node {
 	public abstract ArrayList<Node> routePacket(Packet packet);
 	
 	public void sendPacket(Packet packet) {
-		ArrayList<Node> nextHops = routePacket(packet);
-		if (nextHops.isEmpty()) {
-			System.out.println("No route found for packet\nCannot send\nDropping packet");
-			removePacket(packet);
+		// Nếu đích là chính nó
+        if (packet.getDestination().equals(this)) {
+        	this.removePacket(packet); // Xoa goi tin
             return;
+        }
+		
+		ArrayList<Node> nextHops = routePacket(packet);
+		
+		if (nextHops.isEmpty()) {
+			// Neu khong tim thay duong di -> gui goi tin toi default gateway
+			if (this.defaultGateway != null) {
+	            System.out.println("Forwarding packet to default gateway: " + defaultGateway.getName());
+	            for (Connection connection : connections) {
+	                if (connection.getNode2().equals(defaultGateway)) {
+	                    connection.addPacket(packet);
+	                    break;
+	                }
+	            }
+	        } else {
+	            System.out.println("No route found for packet\nCannot send\nDropping packet");
+	        }
+		} else {
+			// Neu tim thay duong di -> gui goi tin toi cac nut tiep theo
+			for (Node nextHop : nextHops) {
+	            for (Connection connection : connections) {
+	                if (connection.getNode2().equals(nextHop)) {
+	                    System.out.println("Sending packet from " + this.name + " to " + nextHop.name);
+	                    connection.addPacket(packet); // Transmit packet to a connection
+	                    break;
+	                }
+	            }
+	        }
 		}
 		
-		for (Node nextHop : nextHops) {
-            for (Connection connection : connections) {
-                if (connection.getNode2().equals(nextHop)) {
-                    System.out.println("Sending packet from " + this.name + " to " + nextHop.name);
-                    connection.addPacket(packet); // Transmit packet to a connection
-                    break;
-                }
-            }
-        }
+		removePacket(packet);
+        return;
 	}
 	
 	// Received Packet methods
@@ -139,8 +180,8 @@ abstract class Node {
 	@Override
     public boolean equals(Object obj) {
 		if (obj instanceof Node) {
-			Node other = (Node) obj;
-	        return this.ipAddress.equals(other.ipAddress);
+			Node that = (Node) obj;
+	        return this.ipAddress.equals(that.ipAddress);
 		}
 		return false;
     }

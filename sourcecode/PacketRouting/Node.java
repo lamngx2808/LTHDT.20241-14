@@ -4,137 +4,185 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Node { // will always be connecting to a router
-  private static int idCounter = 0; // Static counter for unique IDs
-  private int id;
-  private String name;
-  private String ipAddress;
-  private Connection default_gateway;
+abstract class Node {
+	private static int idCounter = 0; // Static counter for unique IDs
+	private int id;
+	private String name;
+	private String ipAddress;
+	private String macAddress;
+	private Node defaultGateway;
 
-  // connections contain the connection to immediate node and the routing table contain the connection that is in a path to
-  // the destination node
-  private final ArrayList<RoutingEntry> routingTable = new ArrayList<>();
-  private final ArrayList<Connection> connections = new ArrayList<>();
-  private Queue<Packet> packets = new LinkedList<>();
-  private ArrayList<Packet> receivePackets = new ArrayList<>();
+	private ArrayList<Connection> connections = new ArrayList<>();
+	private Queue<Packet> packets = new LinkedList<>();
+	private ArrayList<Packet> receivedPackets = new ArrayList<>();
 
-  public Node(String name, String ipAddress) {
-    super();
-    this.id = idCounter++;
-    this.name = name;
-    this.ipAddress = ipAddress;
-  }
+	// Constructor
 
-  // Getters and Setters
-  public int getId() {
-    return id;
-  }
+	public Node(String name, String macAddress) {
+		super();
+		this.id = idCounter++;
+		this.name = name;
+		this.macAddress = macAddress;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public Node(String name, String ipAddress, String macAddress) {
+		super();
+		this.id = idCounter++;
+		this.name = name;
+		this.ipAddress = ipAddress;
+		this.macAddress = macAddress;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public Node(String name, String ipAddress, String macAddress, Node defaultGateway) {
+		super();
+		this.id = idCounter++;
+		this.name = name;
+		this.ipAddress = ipAddress;
+		this.macAddress = macAddress;
+		this.defaultGateway = defaultGateway;
+		Connection conn = new Connection(this, defaultGateway);
+		this.addConnection(conn);
+		defaultGateway.addConnection(conn);
+	}
 
-  public String getIpAddress() {
-    return ipAddress;
-  }
+	// Getter and Setter
+	public int getId() {
+		return id;
+	}
 
-  public void setIpAddress(String ipAddress) {
-    this.ipAddress = ipAddress;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public Connection getDefault_gateway() {
-    return default_gateway;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public void setDefault_gateway(Connection default_gateway) {
-    this.default_gateway = default_gateway;
-  }
+	public String getIpAddress() {
+		return ipAddress;
+	}
 
-  // Routing Table Methods
-  public ArrayList<RoutingEntry> getRoutingTable() {
-    return routingTable;
-  }
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
 
-  public void addRoutingEntry(RoutingEntry re) {
-    routingTable.add(re);
-  }
+	public String getMacAddress() {
+		return macAddress;
+	}
 
-  public void addRoutingEntry(ArrayList<RoutingEntry> re) {
-    routingTable.addAll(re);
-  }
+	public void setMacAddress(String macAddress) {
+		this.macAddress = macAddress;
+	}
 
-  public void removeRoutingEntry(RoutingEntry re) {
-    routingTable.remove(re);
-  }
+	public Node getDefaultGateway() {
+		return defaultGateway;
+	}
 
-  public void removeRoutingEntry(ArrayList<RoutingEntry> re) {
-    routingTable.removeAll(re);
-  }
+	public void setDefaultGateway(Node defaultGateway) {
+		this.defaultGateway = defaultGateway;
+	}
 
-  public void updateRoutingEntry(RoutingEntry pikachu, RoutingEntry mewtwo) {
-    routingTable.remove(pikachu);
-    routingTable.add(mewtwo);
-  }
+	public ArrayList<Connection> getConnections() {
+		return connections;
+	}
 
-  // Packet Methods
-  public Queue<Packet> getPackets() {
-    return packets;
-  }
+	public Queue<Packet> getPackets() {
+		return packets;
+	}
 
-  public void addPacket(Packet packet) {
-    this.packets.add(packet);
-  }
+	public ArrayList<Packet> getReceivedPackets() {
+		return receivedPackets;
+	}
 
-  public void addPacket(ArrayList<Packet> packets) {
-    this.packets.addAll(packets);
-  }
+	// Connection methods
+	public void addConnection(Connection connection) {
+		if (connection.getNode1().getId() == this.id) {
+			this.connections.add(connection);
+		} else if (connection.getNode2().getId() == this.id) {
+			Connection reversedConnection = new Connection(this, connection.getNode1(), connection.getLatency());
+			this.connections.add(reversedConnection);
+		}
+	}
 
-  public void removePacket(Packet packet) {
-    this.packets.remove(packet);
-  }
+	public void removeConnection(Connection connection) {
+		connections.remove(connection);
+	}
 
-  public void removePacket(ArrayList<Packet> packets) {
-    this.packets.removeAll(packets);
-  }
+	// Packet methods
+	public void addPacket(Packet packet) {
+		packets.add(packet);
+	}
 
-  // Connection Methods
-  public ArrayList<Connection> getConnections() {
-    return connections;
-  }
+	public void removePacket(Packet packet) {
+		packets.remove(packet);
+	}
 
-  public void addConnection(Connection connection) {
-    connections.add(connection);
-  }
+	public abstract ArrayList<Node> routePacket(Packet packet);
 
-  public void addConnection(ArrayList<Connection> connections) {
-    this.connections.addAll(connections);
-  }
+	public void sendPacket(Packet packet) {
+		// Nếu đích là chính nó
+		if (packet.getDestination().equals(this)) {
+			this.removePacket(packet); // Xoa goi tin
+			return;
+		}
 
-  public void removeConnection(Connection connection) {
-    connections.remove(connection);
-  }
+		ArrayList<Node> nextHops = routePacket(packet);
 
-  public void removeConnection(ArrayList<Connection> connections) {
-    this.connections.removeAll(connections);
-  }
+		if (nextHops.isEmpty()) {
+			// Neu khong tim thay duong di -> gui goi tin toi default gateway
+			if (this.defaultGateway != null) {
+				System.out.println("Forwarding packet to default gateway: " + defaultGateway.getName());
+				for (Connection connection : connections) {
+					if (connection.getNode2().equals(defaultGateway)) {
+						connection.addPacket(packet);
+						break;
+					}
+				}
+			} else {
+				System.out.println("No route found for packet\nCannot send\nDropping packet");
+			}
+		} else {
+			// Neu tim thay duong di -> gui goi tin toi cac nut tiep theo
+			for (Node nextHop : nextHops) {
+				for (Connection connection : connections) {
+					if (connection.getNode2().equals(nextHop)) {
+						System.out.println("Sending packet from " + this.name + " to " + nextHop.name);
+						connection.addPacket(packet); // Transmit packet to a connection
+						break;
+					}
+				}
+			}
+		}
 
-  // Received Packets
-  public ArrayList<Packet> getReceivedPackets() {
-    return receivePackets;
-  }
+		removePacket(packet);
+		return;
+	}
 
-  // Tick Method
-  public void tick() {
-    while (!packets.isEmpty()) {
-      Packet packet = packets.poll();
-      if (packet.getDestination().getIpAddress().equals(this.ipAddress))
-        receivePackets.add(packet);
-      else
-        default_gateway.addPacket(packet, this);
-    }
-  }
+	// Received Packet methods
+	public void addReceivedPacket(Packet packet) {
+		receivedPackets.add(packet);
+	}
+
+	private void processReceivedPackets() {
+		for (Packet p : receivedPackets) {
+			System.out.println("Processing packet at " + this.getName() + ":\n" + p.getPayload());
+		}
+	}
+
+	public ArrayList<Node> getNeighbors() {
+		ArrayList<Node> neighbors = new ArrayList<Node>();
+		for (Connection conn : this.connections) {
+			neighbors.add(conn.getNode2());
+		}
+		return neighbors;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Node) {
+			Node that = (Node) obj;
+			return this.ipAddress.equals(that.ipAddress);
+		}
+		return false;
+	}
 }

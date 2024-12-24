@@ -42,21 +42,29 @@ public class Connection {
 		activePackets.remove(packet);
 	}
 	
+	// Phuong thuc mo phong 1 don vi thoi gian
 	public void tick() {		
 	    for (ActivePacket activePacket : activePackets) {
-	    	if (activePacket.getProgress() == this.latency) {
-	    		// Neu goi tin da den dich thi them vao danh sach cac goi tin nhan dc
-	    		if (activePacket.getPacket().getDestination().getId() == this.node2.getId()) {
-	    			this.node2.addReceivedPacket(activePacket.getPacket());
-	    		} else {
-	    			// Neu goi tin chua den dich thi them goi tin vao list packet de tiep tuc dinh tuyen
-	    			this.node2.addPacket(activePacket.getPacket());
-	    		}
+	    	if (activePacket.getProgress() >= this.latency) {
+	    		// Neu goi tin da truyen xong thi xu ly goi tin do
+	    		processCompletedPacket(activePacket.getPacket());
+	    		
 	    		// Xoa goi tin khoi ds cac goi tin dang truyen trong lien ket hien tai
 	    		this.removePacket(activePacket);
 	    	} else {
 	    		activePacket.incProgress();
 	    	}
+	    }
+	}
+	
+	// Xu ly cac goi tin da truyen xong
+	private void processCompletedPacket(Packet packet) {
+	    if (packet.getDestination().equals(this.node2)) {
+	    	// Neu goi tin da den dich thi them vao danh sach cac goi tin nhan dc
+	        this.node2.addReceivedPacket(packet);
+	    } else {
+	        // Gói tin chưa đến đích, thêm vào hàng đợi để định tuyến tiếp
+	        this.node2.addPacket(packet);
 	    }
 	}
 }

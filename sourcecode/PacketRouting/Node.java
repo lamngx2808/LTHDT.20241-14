@@ -9,7 +9,7 @@ abstract class Node {
 	private int id;
 	private String name;
 	private String ipAddress;
-	private String default_gateway;
+	private String defaultGateway;
 	  
 	private ArrayList<Connection> connections = new ArrayList<>();
 	private Queue<Packet> packets = new LinkedList<>();
@@ -23,11 +23,11 @@ abstract class Node {
 	    this.ipAddress = ipAddress;
 	}
 	
-	public Node(String name, String ipAddress, String default_gateway) {
+	public Node(String name, String ipAddress, String defaultGateway) {
 		super();
 		this.name = name;
 		this.ipAddress = ipAddress;
-		this.default_gateway = default_gateway;
+		this.defaultGateway = defaultGateway;
 	}
 
 	// Getter and Setter
@@ -51,12 +51,12 @@ abstract class Node {
 		this.ipAddress = ipAddress;
 	}
 
-	public String getDefault_gateway() {
-		return default_gateway;
+	public String getDefaultGateway() {
+		return defaultGateway;
 	}
 
-	public void setDefault_gateway(String default_gateway) {
-		this.default_gateway = default_gateway;
+	public void setDefaultGateway(String defaultGateway) {
+		this.defaultGateway = defaultGateway;
 	}
 
 	public ArrayList<Connection> getConnections() {
@@ -108,9 +108,9 @@ abstract class Node {
 		
 		for (Node nextHop : nextHops) {
             for (Connection connection : connections) {
-                if (connection.getNode2().getId() == nextHop.getId()) {
+                if (connection.getNode2().equals(nextHop)) {
                     System.out.println("Sending packet from " + this.name + " to " + nextHop.name);
-                    connection.addPacket(packet); // transmit packet to a connection
+                    connection.addPacket(packet); // Transmit packet to a connection
                     break;
                 }
             }
@@ -122,6 +122,12 @@ abstract class Node {
 		receivedPackets.add(packet);
 	}
 	
+	private void processReceivedPackets() {
+    	for (Packet p : receivedPackets) {
+            System.out.println("Processing packet at " + this.getName() + ":\n" + p.getPayload());
+    	}
+    }
+	
 	public ArrayList<Node> getNeighbors() {
 		ArrayList<Node> neighbors = new ArrayList<Node>();
 		for (Connection conn : this.connections) {
@@ -129,4 +135,13 @@ abstract class Node {
 		}
 		return neighbors;
 	}
+	
+	@Override
+    public boolean equals(Object obj) {
+		if (obj instanceof Node) {
+			Node other = (Node) obj;
+	        return this.ipAddress.equals(other.ipAddress);
+		}
+		return false;
+    }
 }

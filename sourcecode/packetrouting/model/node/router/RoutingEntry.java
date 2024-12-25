@@ -1,4 +1,4 @@
-package sourcecode.packetrouting.model.routingalgorithm;
+package sourcecode.packetrouting.model.node.router;
 
 import sourcecode.packetrouting.model.Port;
 import sourcecode.packetrouting.model.connection.Connection;

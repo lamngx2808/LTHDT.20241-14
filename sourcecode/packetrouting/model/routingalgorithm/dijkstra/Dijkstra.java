@@ -10,8 +10,8 @@ import sourcecode.packetrouting.model.Port;
 import sourcecode.packetrouting.model.connection.Connection;
 import sourcecode.packetrouting.model.node.Node;
 import sourcecode.packetrouting.model.node.router.Router;
+import sourcecode.packetrouting.model.node.router.RoutingEntry;
 import sourcecode.packetrouting.model.routingalgorithm.RoutingAlgorithm;
-import sourcecode.packetrouting.model.routingalgorithm.RoutingEntry;
 
 public class Dijkstra extends RoutingAlgorithm {
 	public Dijkstra() {

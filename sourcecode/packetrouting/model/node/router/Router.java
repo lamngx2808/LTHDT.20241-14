@@ -6,7 +6,7 @@ import sourcecode.packetrouting.model.Packet;
 import sourcecode.packetrouting.model.Port;
 import sourcecode.packetrouting.model.node.Node;
 import sourcecode.packetrouting.model.routingalgorithm.RoutingAlgorithm;
-import sourcecode.packetrouting.model.routingalgorithm.RoutingEntry;
+import sourcecode.packetrouting.model.routingalgorithm.bellmanford.BellmanFord;
 import sourcecode.packetrouting.model.routingalgorithm.dijkstra.Dijkstra;
 
 public class Router extends Node {
@@ -62,11 +62,19 @@ public class Router extends Node {
 	        } else {
 	            System.out.println("Routing table size: " + routingTable.size());
 	        }
-		} 
-//		else if (routingAlgorithm.equals("BellmanFord")) {
-//			RoutingAlgorithm bellmanFord = new BellmanFord();
-//			this.routingTable = bellmanFord.computeRoutingTable(this);
-//		}
+		} else if (routingAlgorithm.equals("BellmanFord")) {
+			RoutingAlgorithm bellmanFord = new BellmanFord();
+			System.out.println("Running BellmanFord algorithm...");
+			this.routingTable = bellmanFord.computeRoutingTable(this);
+			
+			// Debugging: In ra giá trị routingTable sau khi tính toán
+			if (routingTable == null) {
+	            System.out.println("Error: routingTable is null after BellmanFord computation.");
+	            return new ArrayList<Node>();
+	        } else {
+	            System.out.println("Routing table size: " + routingTable.size());
+	        }
+		}
 		
 	    ArrayList<Node> nodes = new ArrayList<>();
 	    for(RoutingEntry entry : routingTable) {
@@ -91,11 +99,6 @@ public class Router extends Node {
                 System.out.println("Error: Connection is null in routing entry.");
             }
 	    }
-//	    
-//	      if(packet.getDestination().equals(entry.getDestination())) {
-//	        nodes.add(entry.getConnection().getNode1() == this ? entry.getConnection().getNode2() : entry.getConnection().getNode1());
-//	      }
-//	    }
 	    return nodes;
 	}
 	

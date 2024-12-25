@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import sourcecode.packetrouting.model.Port;
 import sourcecode.packetrouting.model.connection.Connection;
 import sourcecode.packetrouting.model.node.router.Router;
+import sourcecode.packetrouting.model.node.router.RoutingEntry;
 import sourcecode.packetrouting.model.routingalgorithm.RoutingAlgorithm;
-import sourcecode.packetrouting.model.routingalgorithm.RoutingEntry;
 import sourcecode.packetrouting.model.routingalgorithm.dijkstra.Dijkstra;
 
 public class Main {

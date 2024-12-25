@@ -173,6 +173,7 @@ public class Network {
   	public static void main(String[] args) {
 	    // Create some nodes
 	    Router nodeA = new Router("A", "192.168.1.1", "00:1A:2B:3C:4D:5E");
+//	    nodeA.setRoutingAlgorithm("BellmanFord");
 	    nodeA.setRoutingAlgorithm("Dijkstra");
 	    Node nodeB = new Computer("B", "192.168.1.2", "00:1A:2B:3C:4D:5F");
 	    Node nodeC = new Computer("C", "192.168.1.3", "00:1A:2B:3C:4D:60");

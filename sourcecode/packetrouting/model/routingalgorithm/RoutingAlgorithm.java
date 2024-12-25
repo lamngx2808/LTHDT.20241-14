@@ -3,6 +3,7 @@ package sourcecode.packetrouting.model.routingalgorithm;
 import java.util.ArrayList;
 
 import sourcecode.packetrouting.model.node.router.Router;
+import sourcecode.packetrouting.model.node.router.RoutingEntry;
 
 public abstract class RoutingAlgorithm {
 	private String algorithmName;

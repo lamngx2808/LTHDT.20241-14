@@ -1,85 +1,88 @@
 package PacketRouting;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main {
 	public static void main(String[] args) {
 
-		Router routerA = new Router("A", "192.168.0.1", "00:11:22:33:44:55");
-		Router routerB = new Router("B", "192.168.0.2", "00:11:22:33:44:66");
-		Router routerC = new Router("C", "192.168.0.3", "00:11:22:33:44:77");
-		Router routerD = new Router("D", "192.168.0.4", "00:11:22:33:44:88");
-		Router routerE = new Router("E", "192.168.0.5", "00:11:22:33:44:99");
+		Router routerA = new Router("RouterA", "192.168.1.1", "AA:BB:CC:DD:EE:01");
+		Router routerB = new Router("RouterB", "192.168.1.2", "AA:BB:CC:DD:EE:02");
+		Router routerC = new Router("RouterC", "192.168.1.3", "AA:BB:CC:DD:EE:03");
+		Router routerD = new Router("RouterD", "192.168.1.4", "AA:BB:CC:DD:EE:04");
+		Router routerE = new Router("RouterE", "192.168.1.5", "AA:BB:CC:DD:EE:05");
+		Router routerF = new Router("RouterF", "192.168.1.6", "AA:BB:CC:DD:EE:06");
+		Router routerG = new Router("RouterG", "192.168.1.7", "AA:BB:CC:DD:EE:07");
+		Router routerH = new Router("RouterH", "192.168.1.8", "AA:BB:CC:DD:EE:08");
 
-		Hub hub1 = new Hub("Hub1", "192.168.0.100", "00:11:22:33:AA:BB");
-		Hub hub2 = new Hub("Hub2", "192.168.0.101", "00:11:22:33:CC:DD");
+		Port portA1 = new Port("PortA1");
+		Port portB1 = new Port("PortB1");
+		Port portA2 = new Port("PortA2");
+		Port portC1 = new Port("PortC1");
+		Port portB2 = new Port("PortB2");
+		Port portC2 = new Port("PortC2");
+		Port portB3 = new Port("PortB3");
+		Port portD1 = new Port("PortD1");
+		Port portC3 = new Port("PortC3");
+		Port portD2 = new Port("PortD2");
+		Port portD3 = new Port("PortD3");
+		Port portE1 = new Port("PortE1");
+		Port portF1 = new Port("PortF1");
+		Port portF2 = new Port("PortF2");
+		Port portG1 = new Port("PortG1");
+		Port portH1 = new Port("PortH1");
+		Port portH2 = new Port("PortH2");
 
-		Connection connectionAB = new Connection(routerA, routerB, 1);
-		Connection connectionBC = new Connection(routerB, routerC, 2);
-		Connection connectionAC = new Connection(routerA, routerC, 4);
-		Connection connectionCD = new Connection(routerC, routerD, 1);
-		Connection connectionDE = new Connection(routerD, routerE, 3);
-		Connection connectionAE = new Connection(routerA, routerE, 10);
-		Connection connectionAHub1 = new Connection(routerA, hub1, 2);
-		Connection connectionHub1Hub2 = new Connection(hub1, hub2, 1);
-		Connection connectionHub2D = new Connection(hub2, routerD, 3);
+		Connection connAB = new Connection(routerA, routerB, portA1, portB1, 5);
+		Connection connAC = new Connection(routerA, routerC, portA2, portC1, 4);
+		Connection connBC = new Connection(routerB, routerC, portB2, portC2, -2);
+		Connection connBD = new Connection(routerB, routerD, portB3, portD1, 6);
+		Connection connCD = new Connection(routerC, routerD, portC3, portD2, -1);
+		Connection connDE = new Connection(routerD, routerE, portD3, portE1, 3);
+		Connection connEF = new Connection(routerE, routerF, portF1, portF2, 5);
+		Connection connFG = new Connection(routerF, routerG, portG1, portH1, -1);
+		Connection connGH = new Connection(routerG, routerH, portH1, portH2, -2);
+		Connection connCH = new Connection(routerC, routerH, portC2, portH1, 8);
+		Connection connAF = new Connection(routerA, routerF, portA1, portF1, 15); // Trọng số lớn để kiểm tra logic
 
-		routerA.addConnection(connectionAB);
-		routerA.addConnection(connectionAC);
-		routerA.addConnection(connectionAE);
-		routerA.addConnection(connectionAHub1);
-		routerB.addConnection(connectionAB);
-		routerB.addConnection(connectionBC);
-		routerC.addConnection(connectionAC);
-		routerC.addConnection(connectionBC);
-		routerC.addConnection(connectionCD);
-		routerD.addConnection(connectionCD);
-		routerD.addConnection(connectionDE);
-		routerD.addConnection(connectionHub2D);
-		routerE.addConnection(connectionDE);
-		routerE.addConnection(connectionAE);
-		hub1.addConnection(connectionAHub1);
-		hub1.addConnection(connectionHub1Hub2);
-		hub2.addConnection(connectionHub1Hub2);
-		hub2.addConnection(connectionHub2D);
+		List<Connection> connections = Arrays.asList(connAB, connAC, connBC, connBD, connCD, connDE, connEF, connFG,
+				connGH, connCH, connAF);
 
-		BellmanFord bellmanFord = new BellmanFord();
-		routerA.setRoutingAlgorithm(bellmanFord);
+		routerA.addConnection(connAB);
+		routerA.addConnection(connAC);
+		routerA.addConnection(connAF);
+		routerB.addConnection(connAB);
+		routerB.addConnection(connBC);
+		routerB.addConnection(connBD);
+		routerC.addConnection(connAC);
+		routerC.addConnection(connBC);
+		routerC.addConnection(connCD);
+		routerC.addConnection(connCH);
+		routerD.addConnection(connBD);
+		routerD.addConnection(connCD);
+		routerD.addConnection(connDE);
+		routerE.addConnection(connDE);
+		routerE.addConnection(connEF);
+		routerF.addConnection(connEF);
+		routerF.addConnection(connFG);
+		routerF.addConnection(connAF);
+		routerG.addConnection(connFG);
+		routerG.addConnection(connGH);
+		routerH.addConnection(connGH);
+		routerH.addConnection(connCH);
 
-		try {
-			ArrayList<RoutingEntry> routingTableA = bellmanFord.computeRoutingTable(routerA);
+		List<Node> nodes = Arrays.asList(routerA, routerB, routerC, routerD, routerE, routerF, routerG, routerH);
 
-			System.out.println("Routing table for Router A:");
-			for (RoutingEntry entry : routingTableA) {
-				System.out.println("Destination: " + entry.getDestination().getName() + ", Next Hop: "
-						+ entry.getNextHop().getName() + ", Cost: " + entry.getCost());
-			}
-		} catch (IllegalStateException e) {
-			System.out.println("Error in computing routing table for Router A: " + e.getMessage());
-		}
+		BellmanFord bellmanFord = new BellmanFord(nodes, connections);
+		ArrayList<RoutingEntry> routingTable = bellmanFord.computeRoutingTable(routerA);
 
-		try {
-			routerC.setRoutingAlgorithm(bellmanFord);
-			ArrayList<RoutingEntry> routingTableC = bellmanFord.computeRoutingTable(routerC);
-
-			System.out.println("\nRouting table for Router C:");
-			for (RoutingEntry entry : routingTableC) {
-				System.out.println("Destination: " + entry.getDestination().getName() + ", Next Hop: "
-						+ entry.getNextHop().getName() + ", Cost: " + entry.getCost());
-			}
-		} catch (IllegalStateException e) {
-			System.out.println("Error in computing routing table for Router C: " + e.getMessage());
-		}
-
-		try {
-			Connection connectionDC = new Connection(routerD, routerC, -5);
-			routerD.addConnection(connectionDC);
-			routerC.addConnection(connectionDC);
-
-			routerA.setRoutingAlgorithm(bellmanFord);
-			bellmanFord.computeRoutingTable(routerA);
-		} catch (IllegalStateException e) {
-			System.out.println("\nError: " + e.getMessage());
+		System.out.println("\nRouting Table for RouterA:");
+		for (RoutingEntry entry : routingTable) {
+			System.out.println("Destination: " + entry.getDestination().getName() + ", Next Hop: "
+					+ (entry.getNextHop() != null ? entry.getNextHop().getName() : "None") + ", Cost: "
+					+ entry.getCost() + ", Outgoing Port: "
+					+ (entry.getOutGoingPort() != null ? entry.getOutGoingPort().getPortName() : "None"));
 		}
 	}
 }

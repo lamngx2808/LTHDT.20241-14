@@ -19,6 +19,6 @@ public class Hub extends Node {
 
 	@Override
 	public ArrayList<Node> routePacket(Packet packet) {
-		return packet.getSource().getNeighbors();
+		return this.getNeighbors();
 	}
 }

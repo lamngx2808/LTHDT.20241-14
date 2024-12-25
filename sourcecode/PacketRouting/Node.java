@@ -119,6 +119,15 @@ public abstract class Node {
 
 	public abstract ArrayList<Node> routePacket(Packet packet);
 
+	public void broadcast(Packet packet) {
+		for (Connection conn : this.getConnections()) {
+			conn.getNode2().addPacket(packet);
+		}
+
+		removePacket(packet);
+		return;
+	}
+
 	public void sendPacket(Packet packet) {
 		// Nếu đích là chính nó
 		if (packet.getDestination().equals(this)) {
@@ -181,10 +190,8 @@ public abstract class Node {
 	public boolean equals(Object obj) {
 		if (obj instanceof Node) {
 			Node that = (Node) obj;
-			// So sánh an toàn, kiểm tra null trước
-			return this.ipAddress != null && this.ipAddress.equals(that.ipAddress);
+			return this.ipAddress.equals(that.ipAddress);
 		}
 		return false;
 	}
-
 }

@@ -1,7 +1,5 @@
 package PacketRouting;
 
-import javax.sound.sampled.Port;
-
 public class MACAddressEntry {
 	private String macAddress;
 	private Port port;

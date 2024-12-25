@@ -16,6 +16,7 @@ public class Connection {
 		super();
 		this.node1 = node1;
 		this.node2 = node2;
+		this.latency = 1; // Do tre mac dinh la 1
 	}
 	
 	public Connection(Node node1, Node node2, int latency) {
@@ -31,6 +32,7 @@ public class Connection {
 		this.node2 = node2;
 		this.port1 = port1;
 		this.port2 = port2;
+		this.latency = 1;
 	}
 
 	public Connection(Node node1, Node node2, Port port1, Port port2, int latency) {

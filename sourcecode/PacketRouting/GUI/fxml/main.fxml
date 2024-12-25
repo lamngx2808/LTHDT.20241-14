@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label alignment="CENTER" contentDisplay="CENTER" text="Packet Routing Simulation">
+         <font>
+            <Font size="50.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="120.0" />
+         </VBox.margin>
+      </Label>
+      <HBox>
+         <children>
+            <Button mnemonicParsing="false" onAction="#enterHelpScene" prefWidth="750.0" text="Enter help screen">
+               <font>
+                  <Font size="40.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="33.0" right="11.5" />
+               </HBox.margin>
+            </Button>
+            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#enterSimulationScene" prefWidth="750.0" text="Enter simulation screen">
+               <font>
+                  <Font size="40.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="11.5" right="33.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets top="200.0" />
+         </VBox.margin>
+      </HBox>
+      <Button mnemonicParsing="false" onAction="#quitProgram" text="Quit program">
+         <VBox.margin>
+            <Insets left="100.0" right="100.0" top="200.0" />
+         </VBox.margin>
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Button>
+   </children>
+</VBox>

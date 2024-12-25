@@ -3,14 +3,20 @@ Nhóm 14
 
 Thành viên:
 
-Nguyễn Thanh Lâm - 20204997
+1. Nguyễn Thanh Lâm - 20204997
+- Viết tài liệu hướng dẫn, chuẩn bị báo cáo và chuẩn bị slide trình bày
 
-Nguyễn Ngọc Lan - 20225730
+2. Nguyễn Ngọc Lan - 20225730
+- Viết các lớp cơ bản (Node, Edge) và cài đặt thuật toán Dijkstra 
 
-Vi Dương Khanh - 20225864
+3. Vi Dương Khanh - 20225864
+- Tạo lớp Packet và cài đặt thuật toán Bellman-Ford
 
-Nguyễn Thế Kiên - 20194597
+4. Nguyễn Thế Kiên - 20194597
+- Thiết kế GUI: giao diện chính, bảng định tuyến và tích hợp với thuật toán
 
-Lê Xuân Kỳ - 20226112
+5. Lê Xuân Kỳ - 20226112
+- Viết lớp Router, Connection và tạo Abstract Class RoutingAlgorithm
 
-Nguyễn Đăng Tùng Lâm - 20225644
+6. Nguyễn Đăng Tùng Lâm - 20225644
+- Tạo lớp Graph, Network và cài đặt thuật toán Flooding

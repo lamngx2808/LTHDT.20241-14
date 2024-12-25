@@ -1,4 +1,4 @@
-package PacketRouting.Components;
+package sourcecode.PacketRouting.Components;
 
 public class MACAddressEntry {
 	private String macAddress;
@@ -38,5 +38,10 @@ public class MACAddressEntry {
 	
 	public void setTTL(int tTL) {
 		TTL = tTL;
+	}
+
+	@Override
+	public String toString() {
+		return "macAddress = " + macAddress + "\nport = " + port + "\nTTL = " + TTL;
 	}
 }

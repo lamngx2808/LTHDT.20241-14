@@ -2,19 +2,14 @@ package PacketRouting;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class BellmanFord extends RoutingAlgorithm {
-	private List<Node> nodes; // Danh sách các nút
-	private List<Connection> connections; // Danh sách các kết nối
 	private Map<Node, Integer> distances; // Khoảng cách từ nguồn đến các nút
 	private Map<Node, Node> predecessors; // Nút trước đó trong đường đi
 
-	public BellmanFord(List<Node> nodes, List<Connection> connections) {
+	public BellmanFord() {
 		super();
-		this.nodes = nodes;
-		this.connections = connections;
 		this.distances = new HashMap<>();
 		this.predecessors = new HashMap<>();
 		setAlgorithmName("Bellman-Ford");
@@ -22,22 +17,22 @@ public class BellmanFord extends RoutingAlgorithm {
 
 	@Override
 	public ArrayList<RoutingEntry> computeRoutingTable(Router source) {
-
 		computeShortestPath(source);
-
 		return buildRoutingTable(source);
 	}
 
-	public void computeShortestPath(Node source) {
+	private void computeShortestPath(Node source) {
 		initialize(source);
 
-		for (int i = 0; i < nodes.size() - 1; i++) {
-			for (Connection connection : connections) {
+		// Duyệt qua tất cả các nút (|V| - 1) lần
+		for (int i = 0; i < source.getNeighbors().size(); i++) {
+			for (Connection connection : source.getConnections()) {
 				relaxEdge(connection);
 			}
 		}
 
-		for (Connection connection : connections) {
+		// Kiểm tra chu trình trọng số âm
+		for (Connection connection : source.getConnections()) {
 			if (hasNegativeCycle(connection)) {
 				throw new IllegalStateException("Negative weight cycle detected!");
 			}
@@ -48,7 +43,7 @@ public class BellmanFord extends RoutingAlgorithm {
 		distances.clear();
 		predecessors.clear();
 
-		for (Node node : nodes) {
+		for (Node node : source.getNeighbors()) {
 			distances.put(node, Integer.MAX_VALUE);
 			predecessors.put(node, null);
 		}
@@ -60,7 +55,7 @@ public class BellmanFord extends RoutingAlgorithm {
 		Node v = connection.getNode2();
 		int weight = connection.getLatency();
 
-		if (distances.get(u) != Integer.MAX_VALUE && distances.get(u) + weight < distances.get(v)) {
+		if (distances.get(u) != null && distances.get(u) + weight < distances.get(v)) {
 			distances.put(v, distances.get(u) + weight);
 			predecessors.put(v, u);
 		}
@@ -71,13 +66,13 @@ public class BellmanFord extends RoutingAlgorithm {
 		Node v = connection.getNode2();
 		int weight = connection.getLatency();
 
-		return distances.get(u) != Integer.MAX_VALUE && distances.get(u) + weight < distances.get(v);
+		return distances.get(u) != null && distances.get(u) + weight < distances.get(v);
 	}
 
 	private ArrayList<RoutingEntry> buildRoutingTable(Router router) {
 		ArrayList<RoutingEntry> routingTable = new ArrayList<>();
 
-		for (Node destination : nodes) {
+		for (Node destination : router.getNeighbors()) {
 			if (destination.equals(router))
 				continue;
 
@@ -125,7 +120,7 @@ public class BellmanFord extends RoutingAlgorithm {
 	}
 
 	private Connection findConnection(Node source, Node target) {
-		for (Connection connection : connections) {
+		for (Connection connection : source.getConnections()) {
 			if ((connection.getNode1().equals(source) && connection.getNode2().equals(target))
 					|| (connection.getNode2().equals(source) && connection.getNode1().equals(target))) {
 				return connection;

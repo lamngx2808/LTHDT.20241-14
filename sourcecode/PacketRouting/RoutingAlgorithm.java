@@ -134,4 +134,5 @@ public abstract class RoutingAlgorithm {
 			network.flooding(packet, nodeA);
 		}
 	}
+
 }

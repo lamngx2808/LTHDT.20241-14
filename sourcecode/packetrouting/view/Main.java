@@ -1,4 +1,4 @@
-package PacketRouting.GUI;
+package sourcecode.packetrouting.view;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import sourcecode.packetrouting.controller.MainController;
 
 public class Main extends Application {
   private static Scene scene;

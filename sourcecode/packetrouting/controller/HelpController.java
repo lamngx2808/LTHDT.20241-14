@@ -1,4 +1,4 @@
-package PacketRouting.GUI;
+package sourcecode.packetrouting.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;

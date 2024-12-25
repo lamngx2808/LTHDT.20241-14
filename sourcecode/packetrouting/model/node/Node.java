@@ -1,8 +1,11 @@
-package sourcecode.PacketRouting.Components;
+package sourcecode.packetrouting.model.node;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+
+import sourcecode.packetrouting.model.Packet;
+import sourcecode.packetrouting.model.connection.Connection;
 
 public abstract class Node { 
 	private static int idCounter = 0; // Static counter for unique IDs

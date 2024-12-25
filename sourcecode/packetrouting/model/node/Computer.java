@@ -1,6 +1,9 @@
-package sourcecode.PacketRouting.Components;
+package sourcecode.packetrouting.model.node;
 
 import java.util.ArrayList;
+
+import sourcecode.packetrouting.model.Packet;
+import sourcecode.packetrouting.model.connection.Connection;
 
 public class Computer extends Node {
 	

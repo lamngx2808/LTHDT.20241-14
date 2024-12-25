@@ -1,4 +1,4 @@
-package sourcecode.PacketRouting.Components;
+package sourcecode.packetrouting.model;
 
 public class Port {
     private String portName;

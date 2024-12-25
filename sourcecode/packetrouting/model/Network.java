@@ -1,10 +1,15 @@
-package sourcecode.PacketRouting.Components;
+package sourcecode.packetrouting.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
+
+import sourcecode.packetrouting.model.connection.Connection;
+import sourcecode.packetrouting.model.node.Computer;
+import sourcecode.packetrouting.model.node.Node;
+import sourcecode.packetrouting.model.node.router.Router;
 
 public class Network {
 	private ArrayList<Node> nodes = new ArrayList<>();

@@ -1,8 +1,9 @@
-package PacketRouting.GUI;
+package sourcecode.packetrouting.view.screen;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import sourcecode.packetrouting.controller.SimulationController;
 
 public class SimulationScreen {
   Scene scene;

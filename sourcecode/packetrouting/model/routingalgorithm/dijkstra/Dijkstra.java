@@ -1,4 +1,4 @@
-package sourcecode.PacketRouting.dijkstra;
+package sourcecode.packetrouting.model.routingalgorithm.dijkstra;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-import sourcecode.PacketRouting.Components.Connection;
-import sourcecode.PacketRouting.Components.Node;
-import sourcecode.PacketRouting.Components.Port;
-import sourcecode.PacketRouting.Components.Router;
-import sourcecode.PacketRouting.Components.RoutingAlgorithm;
-import sourcecode.PacketRouting.Components.RoutingEntry;
+import sourcecode.packetrouting.model.Port;
+import sourcecode.packetrouting.model.connection.Connection;
+import sourcecode.packetrouting.model.node.Node;
+import sourcecode.packetrouting.model.node.router.Router;
+import sourcecode.packetrouting.model.routingalgorithm.RoutingAlgorithm;
+import sourcecode.packetrouting.model.routingalgorithm.RoutingEntry;
 
 public class Dijkstra extends RoutingAlgorithm {
 	public Dijkstra() {

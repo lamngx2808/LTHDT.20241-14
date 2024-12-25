@@ -1,4 +1,6 @@
-package sourcecode.PacketRouting.Components;
+package sourcecode.packetrouting.model.connection;
+
+import sourcecode.packetrouting.model.Packet;
 
 public class ActivePacket {
 	private Packet packet;

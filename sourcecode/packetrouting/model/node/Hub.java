@@ -1,6 +1,8 @@
-package sourcecode.PacketRouting.Components;
+package sourcecode.packetrouting.model.node;
 
 import java.util.ArrayList;
+
+import sourcecode.packetrouting.model.Packet;
 
 public class Hub extends Node {
 	

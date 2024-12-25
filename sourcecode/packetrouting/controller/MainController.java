@@ -1,4 +1,4 @@
-package PacketRouting.GUI;
+package sourcecode.packetrouting.controller;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -8,6 +8,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import sourcecode.packetrouting.view.Main;
+import sourcecode.packetrouting.view.screen.HelpScreen;
+import sourcecode.packetrouting.view.screen.SimulationScreen;
 
 public class MainController {
   HelpScreen helpScreen = new HelpScreen();

@@ -119,6 +119,15 @@ public abstract class Node {
 	
 	public abstract ArrayList<Node> routePacket(Packet packet);
 	
+	public void broadcast(Packet packet) {
+		for (Connection conn : this.getConnections()) {
+			conn.getNode2().addPacket(packet);
+		}
+		
+		removePacket(packet);
+        return;
+    }
+	
 	public void sendPacket(Packet packet) {
 		// Nếu đích là chính nó
         if (packet.getDestination().equals(this)) {

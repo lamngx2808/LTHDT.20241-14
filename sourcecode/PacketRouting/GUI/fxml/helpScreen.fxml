@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" text="Algorithms">
+               <font>
+                  <Font size="40.0" />
+               </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+            <Separator prefWidth="200.0" style="-fx-background-color: BLACK;" />
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="40.0" layoutY="10.0" onMouseClicked="#displayDijkstra" text="Dijkstra">
+               <font>
+                  <Font size="40.0" />
+               </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+            <Separator prefWidth="200.0" />
+            <Label alignment="CENTER" layoutX="10.0" layoutY="67.0" onMouseClicked="#displayBellmanFord" text="Bellman-Ford">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <Separator prefWidth="200.0" />
+            <Label alignment="CENTER" layoutX="10.0" layoutY="124.0" onMouseClicked="#displayFlooding" text="Flooding">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <Separator prefWidth="200.0" />
+            <Label alignment="CENTER" layoutX="50.0" layoutY="190.0" onMouseClicked="#backToMain" text="Back to menu">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="40.0" right="40.0" />
+         </padding>
+      </VBox>
+   </left>
+</BorderPane>

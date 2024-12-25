@@ -1,8 +1,13 @@
-package sourcecode.PacketRouting.Components;
+package sourcecode.packetrouting.model.node.router;
 
 import java.util.ArrayList;
 
-import sourcecode.PacketRouting.dijkstra.Dijkstra;
+import sourcecode.packetrouting.model.Packet;
+import sourcecode.packetrouting.model.Port;
+import sourcecode.packetrouting.model.node.Node;
+import sourcecode.packetrouting.model.routingalgorithm.RoutingAlgorithm;
+import sourcecode.packetrouting.model.routingalgorithm.RoutingEntry;
+import sourcecode.packetrouting.model.routingalgorithm.dijkstra.Dijkstra;
 
 public class Router extends Node {
 	private ArrayList<Port> ports;

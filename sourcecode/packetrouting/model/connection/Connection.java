@@ -1,6 +1,10 @@
-package sourcecode.PacketRouting.Components;
+package sourcecode.packetrouting.model.connection;
 
 import java.util.ArrayList;
+
+import sourcecode.packetrouting.model.Packet;
+import sourcecode.packetrouting.model.Port;
+import sourcecode.packetrouting.model.node.Node;
 
 public class Connection {
 	private Node node1;

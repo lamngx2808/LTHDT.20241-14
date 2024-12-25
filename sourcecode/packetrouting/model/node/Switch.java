@@ -1,6 +1,10 @@
-package sourcecode.PacketRouting.Components;
+package sourcecode.packetrouting.model.node;
 
 import java.util.ArrayList;
+
+import sourcecode.packetrouting.model.Packet;
+import sourcecode.packetrouting.model.Port;
+import sourcecode.packetrouting.model.connection.Connection;
 
 public class Switch extends Node {
 	private ArrayList<MACAddressEntry> macAddressTable = new ArrayList<MACAddressEntry>();

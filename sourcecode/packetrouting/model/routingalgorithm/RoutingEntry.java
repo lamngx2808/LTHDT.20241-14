@@ -1,4 +1,8 @@
-package sourcecode.PacketRouting.Components;
+package sourcecode.packetrouting.model.routingalgorithm;
+
+import sourcecode.packetrouting.model.Port;
+import sourcecode.packetrouting.model.connection.Connection;
+import sourcecode.packetrouting.model.node.Node;
 
 public class RoutingEntry {
   private Node destination;

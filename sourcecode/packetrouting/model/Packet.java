@@ -1,4 +1,6 @@
-package sourcecode.PacketRouting.Components;
+package sourcecode.packetrouting.model;
+
+import sourcecode.packetrouting.model.node.Node;
 
 public class Packet {
 	private Node source;

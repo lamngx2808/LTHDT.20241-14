@@ -1,4 +1,6 @@
-package sourcecode.PacketRouting.Components;
+package sourcecode.packetrouting.model.node;
+
+import sourcecode.packetrouting.model.Port;
 
 public class MACAddressEntry {
 	private String macAddress;

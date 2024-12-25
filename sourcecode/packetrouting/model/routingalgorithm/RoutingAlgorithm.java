@@ -1,6 +1,8 @@
-package sourcecode.PacketRouting.Components;
+package sourcecode.packetrouting.model.routingalgorithm;
 
 import java.util.ArrayList;
+
+import sourcecode.packetrouting.model.node.router.Router;
 
 public abstract class RoutingAlgorithm {
 	private String algorithmName;

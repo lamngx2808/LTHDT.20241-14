@@ -1,6 +1,6 @@
-package sourcecode.PacketRouting.dijkstra;
+package sourcecode.packetrouting.model.routingalgorithm.dijkstra;
 
-import sourcecode.PacketRouting.Components.Node;
+import sourcecode.packetrouting.model.node.Node;
 
 public class AdjListNode {
     private Node vertex;

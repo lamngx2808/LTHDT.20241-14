@@ -122,4 +122,4 @@ public class Network {
     // Perform flooding
     network.flooding(packet, nodeA);
   }
-}}
+}

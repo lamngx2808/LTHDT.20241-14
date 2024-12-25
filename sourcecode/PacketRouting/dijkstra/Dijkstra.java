@@ -1,4 +1,4 @@
-package PacketRouting.dijkstra;
+package sourcecode.PacketRouting.dijkstra;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-import PacketRouting.Components.Connection;
-import PacketRouting.Components.Node;
-import PacketRouting.Components.Port;
-import PacketRouting.Components.Router;
-import PacketRouting.Components.RoutingAlgorithm;
-import PacketRouting.Components.RoutingEntry;
+import sourcecode.PacketRouting.Components.Connection;
+import sourcecode.PacketRouting.Components.Node;
+import sourcecode.PacketRouting.Components.Port;
+import sourcecode.PacketRouting.Components.Router;
+import sourcecode.PacketRouting.Components.RoutingAlgorithm;
+import sourcecode.PacketRouting.Components.RoutingEntry;
 
 public class Dijkstra extends RoutingAlgorithm {
 	public Dijkstra() {
@@ -54,20 +54,28 @@ public class Dijkstra extends RoutingAlgorithm {
 	    for (Map.Entry<Node, Integer> entry : distances.entrySet()) {
 	        Node destination = entry.getKey();
             Node nextHop = getNextHop(source, destination, previousNodes);
-
+            System.out.println("NextHop cho " + destination + "là: " + nextHop);
             // Nếu tìm được nextHop, tạo RoutingEntry
             if (nextHop != null) {
                 Connection connection = findConnection(source, nextHop);
-                Port outgoingPort = connection.getPort1(); // Lấy cổng ra của source 
-
-                RoutingEntry routingEntry = new RoutingEntry(
-                    destination,       			// Destination
-                    outgoingPort,      			// OutGoingPort
-                    nextHop,           			// NextHop
-                    connection.getLatency(),    // Cost
-                    connection         			// Connection
-                );
-                routingTable.add(routingEntry);
+                if (connection == null) {
+                	System.out.println("Null roi");
+                }
+                
+                if (connection != null) {
+	                Port outgoingPort = connection.getPort1(); // Lấy cổng ra của source 
+	
+	                RoutingEntry routingEntry = new RoutingEntry(
+	                    destination,       			// Destination
+	                    outgoingPort,      			// OutGoingPort
+	                    nextHop,           			// NextHop
+	                    connection.getLatency(),    // Cost
+	                    connection         			// Connection
+	                );
+	                routingTable.add(routingEntry);
+                } else {
+                    System.out.println("Không có kết nối hợp lệ giữa " + source + "và " + nextHop);
+                }
             }
 	    }
 
@@ -110,10 +118,15 @@ public class Dijkstra extends RoutingAlgorithm {
 	
 	private Connection findConnection(Node from, Node to) {
 	    for (Connection conn : from.getConnections()) {
-	        if (conn.getNode2().equals(to)) {
+	    	System.out.println("Kiểm tra kết nối giữa " + from + "và " + to);
+	    	
+	        if (conn.getNode1().equals(from) && conn.getNode2().equals(to)) {
+	        	System.out.println("Tìm thấy kết nối hợp lệ: " + conn);
 	            return conn;
-	        }
+	        } 
 	    }
+	    
+	    System.out.println("Không tìm thấy kết nối hợp lệ giữa " + from + "và " + to);
 	    return null; // Không tìm thấy kết nối
 	}
 	

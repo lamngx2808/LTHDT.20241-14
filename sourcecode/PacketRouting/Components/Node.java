@@ -1,4 +1,4 @@
-package PacketRouting.Components;
+package sourcecode.PacketRouting.Components;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -128,13 +128,14 @@ public abstract class Node {
         return;
     }
 	
-	public void sendPacket(Packet packet) {
+	public ArrayList<Connection> sendPacket(Packet packet) {
 		// Nếu đích là chính nó
         if (packet.getDestination().equals(this)) {
         	this.removePacket(packet); // Xoa goi tin
-            return;
+            return new ArrayList<Connection>(); 
         }
 		
+        ArrayList<Connection> conns = new ArrayList<Connection>();
 		ArrayList<Node> nextHops = routePacket(packet);
 		
 		if (nextHops.isEmpty()) {
@@ -144,11 +145,12 @@ public abstract class Node {
 	            for (Connection connection : connections) {
 	                if (connection.getNode2().equals(defaultGateway)) {
 	                    connection.addPacket(packet);
-	                    break;
+	                    conns.add(connection);
 	                }
 	            }
 	        } else {
 	            System.out.println("No route found for packet\nCannot send\nDropping packet");
+	            return new ArrayList<Connection>();
 	        }
 		} else {
 			// Neu tim thay duong di -> gui goi tin toi cac nut tiep theo
@@ -157,14 +159,14 @@ public abstract class Node {
 	                if (connection.getNode2().equals(nextHop)) {
 	                    System.out.println("Sending packet from " + this.name + " to " + nextHop.name);
 	                    connection.addPacket(packet); // Transmit packet to a connection
-	                    break;
+	                    conns.add(connection);
 	                }
 	            }
 	        }
 		}
 		
 		removePacket(packet);
-        return;
+        return conns;
 	}
 	
 	// Received Packet methods
@@ -189,9 +191,15 @@ public abstract class Node {
 	@Override
     public boolean equals(Object obj) {
 		if (obj instanceof Node) {
+			if (getClass() != obj.getClass()) return false;
 			Node that = (Node) obj;
-	        return this.ipAddress.equals(that.ipAddress);
+			return this.ipAddress != null && this.ipAddress.equals(that.ipAddress);
 		}
 		return false;
     }
+
+	@Override
+	public String toString() {
+		return "Node\n- ID = " + id + "\n- Name = " + name + "\n- IPAddress = " + ipAddress + "\n- MacAddress = " + macAddress + "\n";
+	}
 }

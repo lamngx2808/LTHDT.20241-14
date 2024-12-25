@@ -1,4 +1,4 @@
-package PacketRouting.Components;
+package sourcecode.PacketRouting.Components;
 
 public class RoutingEntry {
   private Node destination;
@@ -13,6 +13,7 @@ public class RoutingEntry {
     this.outGoingPort = outGoingPort;
     this.nextHop = nextHop;
     this.cost = cost;
+    this.connection = connection;
   }
 
   // Getters and Setters
@@ -55,4 +56,10 @@ public class RoutingEntry {
   public void setConnection(Connection connection) {
     this.connection = connection;
   }
+
+	@Override
+	public String toString() {
+		return "RoutingEntry\nDestination = " + destination + "\nOutgoing Port = " + outGoingPort + "\nNextHop = " + nextHop
+				+ "\nCost = " + cost + "\n";
+	}
 }

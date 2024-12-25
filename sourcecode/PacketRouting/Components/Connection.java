@@ -1,4 +1,4 @@
-package PacketRouting.Components;
+package sourcecode.PacketRouting.Components;
 
 import java.util.ArrayList;
 
@@ -77,6 +77,10 @@ public class Connection {
 	    this.latency = latency;
 	}
 	
+	public ArrayList<ActivePacket> getActivePackets() {
+		return activePackets;
+	}
+
 	public void addPacket(Packet packet) {
 	    activePackets.add(new ActivePacket(packet));
 	}
@@ -109,5 +113,11 @@ public class Connection {
 	        // Gói tin chưa đến đích, thêm vào hàng đợi để định tuyến tiếp
 	        this.node2.addPacket(packet);
 	    }
+	}
+
+	@Override
+	public String toString() {
+		return "Connection\nNode1: " + node1 + "\nNode2: " + node2 + "\nPort1 = " + port1 + "\nPort2 = " + port2
+				+ "\nLatency = " + latency + "\n";
 	}
 }

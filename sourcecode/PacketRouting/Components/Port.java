@@ -1,4 +1,4 @@
-package PacketRouting.Components;
+package sourcecode.PacketRouting.Components;
 
 public class Port {
     private String portName;
@@ -39,4 +39,9 @@ public class Port {
 		}
 		return false;
     }
+
+	@Override
+	public String toString() {
+		return "[portName = " + portName + ", ipAddress = " + ipAddress + "]";
+	}
 }

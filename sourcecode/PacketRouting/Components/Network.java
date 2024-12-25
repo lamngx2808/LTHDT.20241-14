@@ -8,7 +8,7 @@ import java.util.Queue;
 
 public class Network {
   private ArrayList<Node> nodes = new ArrayList<>();
-
+  private ArrayList<Connection> connections = new ArrayList<>();
   public Network() {
 
   }
@@ -38,8 +38,10 @@ public class Network {
     for (Connection conn : connections) {
       conn.getNode1().addConnection(conn);
       conn.getNode2().addConnection(conn);
+      this.connections.add(conn);
     }
   }
+  public ArrayList<Connection> getConnections() {return connections;}
 
   public void flooding(Packet packet, Node startNode) {
     ArrayList<Node> visited = new ArrayList<>();

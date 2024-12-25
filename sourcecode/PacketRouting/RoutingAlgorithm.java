@@ -1,11 +1,17 @@
 package PacketRouting;
 
-public abstract class RoutingAlgorithm {
-	String algorithmName;
+import java.util.ArrayList;
 
-	public RoutingAlgorithm(String string) {
-		// TODO Auto-generated constructor stub
+public abstract class RoutingAlgorithm {
+	private String algorithmName;
+
+	public abstract ArrayList<RoutingEntry> computeRoutingTable(Router router);
+
+	public String getAlgorithmName() {
+		return algorithmName;
 	}
 
-	public abstract void computeRoutingTable();
+	public void setAlgorithmName(String algorithmName) {
+		this.algorithmName = algorithmName;
+	}
 }

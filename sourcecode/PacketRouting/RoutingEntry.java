@@ -1,58 +1,58 @@
 package PacketRouting;
 
 public class RoutingEntry {
-  private String destination;
-  private String outGoingHop; // The interface used to send packets
-  private String nextHop; // Refers to the IP of the connection's other node
-  private int cost; // The sum of all connections' latency
-  private Connection connection;
+	private Node destination;
+	private Port outGoingPort; // The interface used to send packets
+	private Node nextHop; // Refers to the IP of the connection's other node
+	private int cost; // The sum of all connections' latency
+	private Connection connection;
 
-  // Constructor
-  public RoutingEntry(String destination, String outGoingHop, String nextHop, int cost, Connection connection) {
-    this.destination = destination;
-    this.outGoingHop = outGoingHop;
-    this.nextHop = nextHop;
-    this.cost = cost;
-  }
+	// Constructor
+	public RoutingEntry(Node destination, Port outGoingPort, Node nextHop, int cost, Connection connection) {
+		this.destination = destination;
+		this.outGoingPort = outGoingPort;
+		this.nextHop = nextHop;
+		this.cost = cost;
+	}
 
-  // Getters and Setters
-  public String getDestination() {
-    return destination;
-  }
+	// Getters and Setters
+	public Node getDestination() {
+		return destination;
+	}
 
-  public void setDestination(String destination) {
-    this.destination = destination;
-  }
+	public void setDestination(Node destination) {
+		this.destination = destination;
+	}
 
-  public String getOutGoingHop() {
-    return outGoingHop;
-  }
+	public Port getOutGoingPort() {
+		return outGoingPort;
+	}
 
-  public void setOutGoingHop(String outGoingHop) {
-    this.outGoingHop = outGoingHop;
-  }
+	public void setOutGoingPort(Port outGoingPort) {
+		this.outGoingPort = outGoingPort;
+	}
 
-  public String getNextHop() {
-    return nextHop;
-  }
+	public Node getNextHop() {
+		return nextHop;
+	}
 
-  public void setNextHop(String nextHop) {
-    this.nextHop = nextHop;
-  }
+	public void setNextHop(Node nextHop) {
+		this.nextHop = nextHop;
+	}
 
-  public int getCost() {
-    return cost;
-  }
+	public int getCost() {
+		return cost;
+	}
 
-  public void setCost(int cost) {
-    this.cost = cost;
-  }
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
 
-  public Connection getConnection() {
-    return connection;
-  }
+	public Connection getConnection() {
+		return connection;
+	}
 
-  public void setConnection(Connection connection) {
-    this.connection = connection;
-  }
+	public void setConnection(Connection connection) {
+		this.connection = connection;
+	}
 }

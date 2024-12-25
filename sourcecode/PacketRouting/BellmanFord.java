@@ -2,110 +2,107 @@ package PacketRouting;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class BellmanFord extends RoutingAlgorithm {
-
-	public BellmanFord(List<Node> nodes, List<Connection> connections) {
-		super("Bellman-Ford");
-		this.nodes = nodes;
-		this.connections = connections;
-		this.distances = new HashMap<>();
-		this.predecessors = new HashMap<>();
+	public BellmanFord() {
+		this.setAlgorithmName("Bellman-Ford");
 	}
-
-	private List<Node> nodes;
-	private List<Connection> connections;
-	private Map<Node, Integer> distances;
-	private Map<Node, Node> predecessors;
 
 	@Override
-	public void computeRoutingTable() {
-		for (Node source : nodes) {
-			try {
-				computeShortestPath(source);
-			} catch (IllegalStateException e) {
-				System.err.println(e.getMessage());
+	public ArrayList<RoutingEntry> computeRoutingTable(Router router) {
+		ArrayList<RoutingEntry> routingTable = new ArrayList<>();
+		Map<Node, Integer> distances = new HashMap<>();
+		Map<Node, Node> predecessors = new HashMap<>();
+		ArrayList<Node> nodes = new ArrayList<>();
+
+		for (Connection connection : router.getConnections()) {
+			if (!nodes.contains(connection.getNode1())) {
+				nodes.add(connection.getNode1());
+			}
+			if (!nodes.contains(connection.getNode2())) {
+				nodes.add(connection.getNode2());
 			}
 		}
-	}
-
-	public void computeShortestPath(Node source) {
-		initialize(source);
-
-		for (int i = 0; i < nodes.size() - 1; i++) {
-			for (Connection connection : connections) {
-				relaxEdge(connection);
-			}
-		}
-
-		for (Connection connection : connections) {
-			if (isNegativeCycle(connection)) {
-				throw new IllegalStateException("Negative weight cycle detected in the graph!");
-			}
-		}
-
-		printRoutingTable(source);
-	}
-
-	private void initialize(Node source) {
-		distances.clear();
-		predecessors.clear();
 
 		for (Node node : nodes) {
 			distances.put(node, Integer.MAX_VALUE);
 			predecessors.put(node, null);
 		}
-		distances.put(source, 0);
-	}
+		distances.put(router, 0);
 
-	private void relaxEdge(Connection connection) {
-		Node u = connection.getNode1();
-		Node v = connection.getNode2();
-		int weight = connection.getLatency();
+		for (int i = 0; i < nodes.size() - 1; i++) {
+			for (Connection connection : router.getConnections()) {
+				Node u = connection.getNode1();
+				Node v = connection.getNode2();
+				int weight = connection.getLatency();
 
-		if (distances.get(u) != Integer.MAX_VALUE && distances.get(u) + weight < distances.get(v)) {
-			distances.put(v, distances.get(u) + weight);
-			predecessors.put(v, u);
-		}
-	}
+				if (distances.get(u) != Integer.MAX_VALUE && distances.get(u) + weight < distances.get(v)) {
+					distances.put(v, distances.get(u) + weight);
+					predecessors.put(v, u);
+				}
 
-	private boolean isNegativeCycle(Connection connection) {
-		Node u = connection.getNode1();
-		Node v = connection.getNode2();
-		int weight = connection.getLatency();
-
-		return distances.get(u) != Integer.MAX_VALUE && distances.get(u) + weight < distances.get(v);
-	}
-
-	private void printRoutingTable(Node source) {
-		System.out.println("Routing Table for Node: " + source.getName());
-		for (Node node : nodes) {
-			if (distances.get(node) == Integer.MAX_VALUE) {
-				System.out.println("Destination: " + node.getName() + " | Distance: Infinity | Path: No path");
-			} else {
-				System.out
-						.print("Destination: " + node.getName() + " | Distance: " + distances.get(node) + " | Path: ");
-				printPath(node);
-				System.out.println();
+				if (distances.get(v) != Integer.MAX_VALUE && distances.get(v) + weight < distances.get(u)) {
+					distances.put(u, distances.get(v) + weight);
+					predecessors.put(u, v);
+				}
 			}
 		}
-	}
 
-	private void printPath(Node target) {
-		List<Node> path = new ArrayList<>();
-		Node current = target;
+		for (Connection connection : router.getConnections()) {
+			Node u = connection.getNode1();
+			Node v = connection.getNode2();
+			int weight = connection.getLatency();
 
-		while (current != null) {
-			path.add(0, current);
-			current = predecessors.get(current);
+			if (distances.get(u) != Integer.MAX_VALUE && distances.get(u) + weight < distances.get(v)) {
+				throw new IllegalStateException("Graph contains a negative-weight cycle");
+			}
 		}
 
-		for (int i = 0; i < path.size(); i++) {
-			if (i > 0)
-				System.out.print(" -> ");
-			System.out.print(path.get(i).getName());
+		for (Node destination : nodes) {
+			if (!destination.equals(router)) {
+				Node nextHop = getNextHop(predecessors, destination, router);
+				Connection connection = getConnectionBetween(router, nextHop);
+				if (connection != null) {
+					routingTable.add(new RoutingEntry(destination, connection.getPort1(), nextHop,
+							distances.get(destination), connection));
+				}
+			}
+		}
+
+		return routingTable;
+	}
+
+	private Node getNextHop(Map<Node, Node> predecessors, Node destination, Node source) {
+		Node current = destination;
+		while (predecessors.get(current) != null && !predecessors.get(current).equals(source)) {
+			current = predecessors.get(current);
+		}
+		return current;
+	}
+
+	private Connection getConnectionBetween(Node node1, Node node2) {
+		for (Connection connection : node1.getConnections()) {
+			if (connection.getNode2().equals(node2)) {
+				return connection;
+			}
+		}
+		return null;
+	}
+
+	private void printDebugInfo(Map<Node, Integer> distances, Map<Node, Node> predecessors) {
+		System.out.println("Node distances:");
+		for (Map.Entry<Node, Integer> entry : distances.entrySet()) {
+			System.out.println(entry.getKey().getName() + " -> " + entry.getValue());
+		}
+
+		System.out.println("Predecessors:");
+		for (Map.Entry<Node, Node> entry : predecessors.entrySet()) {
+			if (entry.getValue() != null) {
+				System.out.println(entry.getKey().getName() + " <- " + entry.getValue().getName());
+			} else {
+				System.out.println(entry.getKey().getName() + " <- null");
+			}
 		}
 	}
 }

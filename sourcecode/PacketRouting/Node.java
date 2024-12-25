@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-abstract class Node {
+public abstract class Node {
 	private static int idCounter = 0; // Static counter for unique IDs
 	private int id;
 	private String name;
@@ -181,8 +181,10 @@ abstract class Node {
 	public boolean equals(Object obj) {
 		if (obj instanceof Node) {
 			Node that = (Node) obj;
-			return this.ipAddress.equals(that.ipAddress);
+			// So sánh an toàn, kiểm tra null trước
+			return this.ipAddress != null && this.ipAddress.equals(that.ipAddress);
 		}
 		return false;
 	}
+
 }

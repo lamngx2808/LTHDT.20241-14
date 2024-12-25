@@ -3,12 +3,38 @@ package PacketRouting;
 import java.util.ArrayList;
 
 public class Router extends Node {
+	private ArrayList<Port> ports;
 	private RoutingAlgorithm routingAlgorithm;
 	private ArrayList<RoutingEntry> routingTable = new ArrayList<>();
 
 	// Constructor
 	public Router(String name, String ip) {
 		super(name, ip);
+	}
+
+	public Router(String name, String ipAddress, String macAddress) {
+		super(name, ipAddress, macAddress);
+	}
+
+	public Router(String name, String ipAddress, String macAddress, Node defaultGateway) {
+		super(name, ipAddress, macAddress, defaultGateway);
+	}
+
+	// Getter and Setter
+	public RoutingAlgorithm getRoutingAlgorithm() {
+		return routingAlgorithm;
+	}
+
+	public void setRoutingAlgorithm(RoutingAlgorithm routingAlgorithm) {
+		this.routingAlgorithm = routingAlgorithm;
+	}
+
+	public ArrayList<Port> getPorts() {
+		return ports;
+	}
+
+	public ArrayList<RoutingEntry> getRoutingTable() {
+		return routingTable;
 	}
 
 	@Override
@@ -34,9 +60,5 @@ public class Router extends Node {
 	public void updateEntry(RoutingEntry old, RoutingEntry n) {
 		routingTable.remove(old);
 		routingTable.add(n);
-	}
-
-	public ArrayList<RoutingEntry> getRoutingTable() {
-		return routingTable;
 	}
 }

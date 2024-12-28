@@ -15,8 +15,8 @@ public class Router extends Node {
 	private ArrayList<RoutingEntry> routingTable = new ArrayList<>();
 	
 	// Constructor
-	public Router(String name, String ip) {
-	    super(name, ip);
+	public Router(String name, String ipAddress) {
+	    super(name, ipAddress);
 	}
 	
 	public Router(String name, String ipAddress, String macAddress) {
@@ -39,11 +39,24 @@ public class Router extends Node {
 	public ArrayList<Port> getPorts() {
 		return ports;
 	}
+	
+	public void setPorts(ArrayList<Port> ports) {
+		this.ports = ports;
+	}
 
 	public ArrayList<RoutingEntry> getRoutingTable() {
 	    return routingTable;
 	}
-
+	
+	// Port methods
+	// Remove when ports is broken
+	public void removePort(Port...ports) {
+		for (Port port : ports) {
+			this.ports.remove(port);
+		}
+	}
+	
+	// Routing methods
 	@Override
 	public ArrayList<Node> routePacket(Packet packet) {
 		System.out.println("Starting routePacket for packet: " + packet.getPayload());
@@ -108,8 +121,8 @@ public class Router extends Node {
 	public void removeEntry(RoutingEntry entry) {
 	    routingTable.remove(entry);
 	}
-	public void updateEntry(RoutingEntry old, RoutingEntry n){
-	    routingTable.remove(old);
-	    routingTable.add(n);
+	public void updateEntry(RoutingEntry oldEntry, RoutingEntry newEntry){
+	    routingTable.remove(oldEntry);
+	    routingTable.add(newEntry);
 	}
 }

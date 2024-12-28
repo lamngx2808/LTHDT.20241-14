@@ -16,8 +16,8 @@ public class Computer extends Node {
 		super(name, ipAddress, macAddress);
 	}
 	
-	public Computer(String name, String ipAddress, String macAddress, Node default_gateway) {
-		super(name, ipAddress, macAddress, default_gateway);
+	public Computer(String name, String ipAddress, String macAddress, Node defaultGateway) {
+		super(name, ipAddress, macAddress, defaultGateway);
 	}
 
 	@Override
